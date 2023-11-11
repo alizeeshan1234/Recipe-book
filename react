@@ -1,0 +1,52 @@
+import React, { useState } from "react";
+
+export function App() {
+  const [recipes, setRecipes] = useState([]);
+  const [recipeName, setRecipeName] = useState({
+    heading: "",
+    context: ""
+  });
+
+  const onChangeHandler = (event) => {
+    const { id, value } = event.target;
+    setRecipeName((previousValue) => ({
+      ...previousValue,
+      [id]: value
+    }));
+  };
+
+  const onClickHandler = () => {
+    // Ensure that the heading is not empty before adding a new recipe
+    if (recipeName.heading.trim() !== "") {
+      setRecipes((prevRecipes) => [...prevRecipes, recipeName]);
+      setRecipeName({ heading: "", context: "" }); // Clear input fields after adding a recipe
+    }
+  };
+
+  return (
+    <div>
+      <input
+        id="heading"
+        type="text"
+        placeholder="Recipe Name : "
+        value={recipeName.heading}
+        onChange={onChangeHandler}
+      />
+      <textarea
+        id="context"
+        placeholder="Recipe Content : "
+        value={recipeName.context}
+        onChange={onChangeHandler}
+      ></textarea>
+      <button onClick={onClickHandler}>Add</button>
+      <ul>
+        {recipes.map((recipe, index) => (
+          <li key={index}>
+            <h1>{recipe.heading}</h1>
+            <p>{recipe.context}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
